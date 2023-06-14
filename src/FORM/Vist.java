@@ -470,3 +470,11 @@ public class Vist extends JFrame {
 	        lblNFcontent.setText(prom);
 	    }
 }
+
+
+
+
+
+
+
+
