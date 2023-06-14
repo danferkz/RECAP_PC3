@@ -195,10 +195,29 @@ public class Vist extends JFrame {
 		contentPane.add(btnCargar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+				btnEliminar.addActionListener(new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				        if (!textDNI.getText().isEmpty()) {
+				            int dni = Integer.parseInt(textDNI.getText());
+				            Estudiante estudiante = buscar(dni);
+				            if (estudiante != null) {
+				                int confirmar = JOptionPane.showConfirmDialog(null, "¿Está seguro?", "Eliminar", JOptionPane.YES_NO_OPTION);
+				                if (confirmar == JOptionPane.YES_OPTION) {
+				                    lista.remove(dni);
+				                    limpiar();
+				                    cargar();
+				                    promedioCalificacion();
+				                    JOptionPane.showMessageDialog(null, estudiante.getName() + " ha sido eliminado");
+				                }
+				            } else {
+				                JOptionPane.showMessageDialog(null, "El DNI " + dni + " no existe");
+				            }
+				        } else {
+				            textDNI.requestFocus();
+				        }
+				    }
+				});
+
 		btnEliminar.setBounds(369, 305, 89, 23);
 		contentPane.add(btnEliminar);
 		
