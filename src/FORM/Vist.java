@@ -37,7 +37,7 @@ import javax.swing.table.DefaultTableModel;
 
 import CLASES.Estudiante;
 import CLASES.Laboratorio;
-import CLASES.Teorico;
+import CLASES.Teoric;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -154,7 +154,7 @@ public class Vist extends JFrame {
 		        
 		        switch(tipo) {
 		            case 1:
-		                lista.put(dni,new Teorico(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
+		                lista.put(dni,new Teoric(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
 		                break;
 		            case 2:
 		                lista.put(dni,new Laboratorio(dni,nombre,genero,oh, t1,t2,ep,ef,nf));

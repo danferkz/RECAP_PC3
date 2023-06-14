@@ -1,6 +1,6 @@
 package CLASES;
 
-public class Teorico implements Estudiante {
+public class Teoric implements Estudiante {
 	
 	private int DNI;
 	private String name, genero, curso, tipo;
@@ -8,7 +8,7 @@ public class Teorico implements Estudiante {
 
 	
 
-	public Teorico(int dNI, String name, String genero, String curso, double t1, double t2, double ep,
+	public Teoric(int dNI, String name, String genero, String curso, double t1, double t2, double ep,
 			double ef, double nf) {
 		DNI = dNI;
 		this.name = name;
