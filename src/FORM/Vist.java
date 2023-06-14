@@ -192,7 +192,7 @@ public class Vist extends JFrame {
 			}
 		});
 		btnCargar.setBounds(238, 353, 89, 23);
-		contentPane.add(btnCargar);
+		contentPane.add(btnCargar); 
 		
 		JButton btnEliminar = new JButton("Eliminar");
 				btnEliminar.addActionListener(new ActionListener() {
