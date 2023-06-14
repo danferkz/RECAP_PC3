@@ -129,7 +129,7 @@ public class Vist extends JFrame {
 		contentPane.add(btnGenerar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(369, 305, 89, 23);
+		btnEliminar.setBounds(337, 305, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnListar = new JButton("Listar");
@@ -141,7 +141,7 @@ public class Vist extends JFrame {
 		contentPane.add(btnListar);
 		
 		JButton btnOrdenar = new JButton("Ordenar");
-		btnOrdenar.setBounds(436, 353, 89, 23);
+		btnOrdenar.setBounds(454, 353, 89, 23);
 		contentPane.add(btnOrdenar);
 		
 		JButton btnAprobados = new JButton("Aprobados");
@@ -275,20 +275,61 @@ public class Vist extends JFrame {
 		contentPane.add(lblNFcontent);
 		
 		JButton btnNewButton = new JButton("Agregar");
-		btnNewButton.setBounds(152, 305, 89, 23);
+		btnNewButton.setBounds(133, 305, 89, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Limpiar");
-		btnNewButton_1.setBounds(152, 353, 89, 23);
+		btnNewButton_1.setBounds(133, 353, 89, 23);
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Modificar");
-		btnNewButton_2.setBounds(270, 305, 89, 23);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int dni = Integer.parseInt(textDNI.getText());
+                String nombre = textName.getText();
+                String genero = "";
+                String oh = textCurso.getText();
+
+                if (rdbtnMasculino.isSelected()==true) {
+                    genero = "Masculino";
+                }
+                else if (rdbtnFemenino.isSelected()==true) {
+                    genero = "Femenino";
+                }
+
+                double t1 = Double.parseDouble(lblT1content.getText());
+                double t2 = Double.parseDouble(lblT2content.getText());
+                double ep = Double.parseDouble(lblEPcontent.getText());
+                double ef = Double.parseDouble(lblEFcontent.getText());
+                double nf = Double.parseDouble(lblNFcontent.getText());
+
+                int tipo = comboBox.getSelectedIndex();
+
+                switch(tipo) {
+                    case 1:
+                        lista.put(dni,new Teorico(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
+                        break;
+                    case 2:
+                        lista.put(dni,new Laboratorio(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
+                        break;
+                }
+			}
+		});
+		btnNewButton_2.setBounds(238, 305, 89, 23);
 		contentPane.add(btnNewButton_2);
 		
 		JButton btnNewButton_3 = new JButton("Cargar");
-		btnNewButton_3.setBounds(270, 353, 89, 23);
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargar();
+			}
+		});
+		btnNewButton_3.setBounds(238, 353, 89, 23);
 		contentPane.add(btnNewButton_3);
+		
+		JButton btnNewButton_4 = new JButton("Guardar");
+		btnNewButton_4.setBounds(337, 353, 89, 23);
+		contentPane.add(btnNewButton_4);
 		
 		lista.put(7010390, new Laboratorio(7010390, "Firulais", "Masculino","Algoritmos",17.2,17,17,17,17));
 		lista.put(7010391, new Laboratorio(7010391, "Firulais", "Femenino","Algoritmos",17.2,17,17,17,17));
@@ -347,6 +388,8 @@ public class Vist extends JFrame {
 		}
 		return null;
 	}
+	
+	
 	
 	
 	void Masculino() {
