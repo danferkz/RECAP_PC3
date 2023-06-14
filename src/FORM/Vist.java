@@ -2,7 +2,6 @@ package FORM;
 
 
 
-
 //Nombres:
 //André Portella
 //Vania Vasquez
@@ -24,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 import java.text.DecimalFormat;
 
@@ -68,6 +68,7 @@ public class Vist extends JFrame {
 	private JLabel lblEPcontent;
 	private JLabel lblEFcontent;
 	private JLabel lblNFcontent;
+	private JLabel lblNumeroCalif;
 	private Hashtable<Integer, Estudiante> lista = new Hashtable<Integer, Estudiante>();
 
 	/**
@@ -103,7 +104,7 @@ public class Vist extends JFrame {
 		contentPane.add(lblDNI);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(21, 68, 46, 14);
+		lblNombre.setBounds(21, 68, 54, 14);
 		contentPane.add(lblNombre);
 		
 		JLabel lblGenero = new JLabel("Genero:");
@@ -128,27 +129,116 @@ public class Vist extends JFrame {
 		btnGenerar.setBounds(21, 353, 89, 23);
 		contentPane.add(btnGenerar);
 		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int dni = Integer.parseInt(textDNI.getText());
+		        String nombre = textName.getText();
+		        String genero = "";
+		        String oh = textCurso.getText();
+		        
+		        if (rdbtnMasculino.isSelected()==true) {
+		        	genero = "Masculino";
+		        }
+		        else if (rdbtnFemenino.isSelected()==true) {
+		        	genero = "Femenino";
+		        }
+		     
+		        double t1 = Double.parseDouble(lblT1content.getText());
+		        double t2 = Double.parseDouble(lblT2content.getText());
+		        double ep = Double.parseDouble(lblEPcontent.getText());
+		        double ef = Double.parseDouble(lblEFcontent.getText());
+		        double nf = Double.parseDouble(lblNFcontent.getText());
+
+		        int tipo = comboBox.getSelectedIndex();
+		        
+		        switch(tipo) {
+		            case 1:
+		                lista.put(dni,new Teorico(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
+		                break;
+		            case 2:
+		                lista.put(dni,new Laboratorio(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
+		                break;
+		        }
+		        
+		        cargar();
+		        promedioCalificacion();
+			}
+		});
+		btnAgregar.setBounds(171, 305, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnLimpiar = new JButton("Limpiar");
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limpiar();
+			}
+		});
+		btnLimpiar.setBounds(139, 353, 89, 23);
+		contentPane.add(btnLimpiar);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnModificar.setBounds(270, 305, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnCargar = new JButton("Cargar");
+		btnCargar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnCargar.setBounds(238, 353, 89, 23);
+		contentPane.add(btnCargar);
+		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(337, 305, 89, 23);
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEliminar.setBounds(369, 305, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnGuardar.setBounds(337, 353, 89, 23);
+		contentPane.add(btnGuardar);
 		
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cargar();
 			}
 		});
 		btnListar.setBounds(468, 305, 89, 23);
 		contentPane.add(btnListar);
 		
 		JButton btnOrdenar = new JButton("Ordenar");
-		btnOrdenar.setBounds(454, 353, 89, 23);
+		btnOrdenar.setBounds(436, 353, 89, 23);
 		contentPane.add(btnOrdenar);
 		
 		JButton btnAprobados = new JButton("Aprobados");
+		btnAprobados.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Aprobado();
+			}
+		});
 		btnAprobados.setBounds(567, 305, 115, 23);
 		contentPane.add(btnAprobados);
 		
 		JButton btnDesaprobados = new JButton("Desaprobados");
+		btnDesaprobados.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DesAprobado();
+			}
+		});
 		btnDesaprobados.setBounds(535, 353, 115, 23);
 		contentPane.add(btnDesaprobados);
 		
@@ -162,6 +252,11 @@ public class Vist extends JFrame {
 		contentPane.add(btnMasculino);
 		
 		JButton btnFemenino = new JButton("Femenino");
+		btnFemenino.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Femenino();
+			}
+		});
 		btnFemenino.setBounds(660, 353, 89, 23);
 		contentPane.add(btnFemenino);
 		
@@ -208,7 +303,7 @@ public class Vist extends JFrame {
 		contentPane.add(lblListadeEstudiantes);
 		
 		JLabel lblPromediodeCalificaciones = new JLabel("Promedio de Calificaciones:");
-		lblPromediodeCalificaciones.setBounds(238, 276, 152, 14);
+		lblPromediodeCalificaciones.setBounds(238, 276, 171, 14);
 		contentPane.add(lblPromediodeCalificaciones);
 		
 		textName = new JTextField();
@@ -222,10 +317,26 @@ public class Vist extends JFrame {
 		textCurso.setColumns(10);
 		
 		rdbtnMasculino = new JRadioButton("M");
+		rdbtnMasculino.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rdbtnMasculino.isSelected()==true) {
+					rdbtnFemenino.setSelected(false);
+				}
+			}
+		});
 		rdbtnMasculino.setBounds(73, 89, 46, 23);
 		contentPane.add(rdbtnMasculino);
 		
 		rdbtnFemenino = new JRadioButton("F");
+		rdbtnFemenino.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rdbtnFemenino.isSelected()==true) {
+					rdbtnMasculino.setSelected(false);
+				}
+			}
+		});
 		rdbtnFemenino.setBounds(119, 89, 46, 23);
 		contentPane.add(rdbtnFemenino);
 		
@@ -274,68 +385,18 @@ public class Vist extends JFrame {
 		lblNFcontent.setBounds(77, 328, 46, 14);
 		contentPane.add(lblNFcontent);
 		
-		JButton btnNewButton = new JButton("Agregar");
-		btnNewButton.setBounds(133, 305, 89, 23);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Limpiar");
-		btnNewButton_1.setBounds(133, 353, 89, 23);
-		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("Modificar");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int dni = Integer.parseInt(textDNI.getText());
-                String nombre = textName.getText();
-                String genero = "";
-                String oh = textCurso.getText();
-
-                if (rdbtnMasculino.isSelected()==true) {
-                    genero = "Masculino";
-                }
-                else if (rdbtnFemenino.isSelected()==true) {
-                    genero = "Femenino";
-                }
-
-                double t1 = Double.parseDouble(lblT1content.getText());
-                double t2 = Double.parseDouble(lblT2content.getText());
-                double ep = Double.parseDouble(lblEPcontent.getText());
-                double ef = Double.parseDouble(lblEFcontent.getText());
-                double nf = Double.parseDouble(lblNFcontent.getText());
-
-                int tipo = comboBox.getSelectedIndex();
-
-                switch(tipo) {
-                    case 1:
-                        lista.put(dni,new Teorico(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
-                        break;
-                    case 2:
-                        lista.put(dni,new Laboratorio(dni,nombre,genero,oh, t1,t2,ep,ef,nf));
-                        break;
-                }
-			}
-		});
-		btnNewButton_2.setBounds(238, 305, 89, 23);
-		contentPane.add(btnNewButton_2);
-		
-		JButton btnNewButton_3 = new JButton("Cargar");
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cargar();
-			}
-		});
-		btnNewButton_3.setBounds(238, 353, 89, 23);
-		contentPane.add(btnNewButton_3);
-		
-		JButton btnNewButton_4 = new JButton("Guardar");
-		btnNewButton_4.setBounds(337, 353, 89, 23);
-		contentPane.add(btnNewButton_4);
+		lblNumeroCalif = new JLabel("00");
+		lblNumeroCalif.setBounds(397, 276, 46, 14);
+		contentPane.add(lblNumeroCalif);
 		
 		lista.put(7010390, new Laboratorio(7010390, "Firulais", "Masculino","Algoritmos",17.2,17,17,17,17));
 		lista.put(7010391, new Laboratorio(7010391, "Firulais", "Femenino","Algoritmos",17.2,17,17,17,17));
 		cargar();
+		promedioCalificacion();
+		
 		
 	}
+	
 	
 	void cargar() {
 		DefaultTableModel model = new DefaultTableModel(
@@ -389,55 +450,61 @@ public class Vist extends JFrame {
 		return null;
 	}
 	
+
+	public void limpiar() {
 	
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(0);
+        
+    }
 	
 	
 	void Masculino() {
-		
-		DefaultTableModel model = new DefaultTableModel(
-		        new String[] {"DNI", "Nombre", "Genero", "Curso","Tipo", "T1", "T2", "EP", "EF","NF"}, 0) {
-		        private static final long serialVersionUID = 1L;
-		        Class<?>[] columnTypes = new Class[] {
-		           Integer.class,
-		           String.class,
-		           String.class,
-		           String.class,
-		           String.class,
-		           Double.class,
-		           Double.class,
-		           Double.class,
-		           Double.class,
-		           Double.class,
-		        };
-		        
-		        public Class<?> getColumnClass(int columnIndex) {
-		            return columnTypes[columnIndex];
-		        }
-		    };
-		
-		Enumeration<Estudiante> e = lista.elements();
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    int rowCount = model.getRowCount();
 
-	    while(e.hasMoreElements()) {
-	        Estudiante m = e.nextElement();
-	        if (m.getGenero().equals("Masculino")) {
-	        model.addRow(new Object[] {
-	        		m.getDNI(),
-	        		m.getName(),
-	        		m.getGenero(),
-	        		m.getCurso(),
-	        		m.getTipo(),
-	        		m.getT1(),
-	        		m.getT2(),
-	        		m.getEp(),
-	        		m.getEf(),
-	        		m.getNf()
-	        
-	        
-	        });
+	    for (int n = rowCount - 1; n >= 0; n--) {
+	        String determinante = (String) model.getValueAt(n, 2);
+	        if (!determinante.equals("Masculino")) {
+	            model.removeRow(n);
+	        }
+	    }
+	}	
+	
+	void Femenino() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    int rowCount = model.getRowCount();
+
+	    for (int n = rowCount - 1; n >= 0; n--) {
+	        String determinante = (String) model.getValueAt(n, 2);
+	        if (!determinante.equals("Femenino")) {
+	            model.removeRow(n);
+	        }
+	    }
 	}
 	
+	void Aprobado() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    int rowCount = model.getRowCount();
+
+	    for (int n = rowCount - 1; n >= 0; n--) {
+	        double determinante = (double) model.getValueAt(n, 9);
+	        if (determinante<11) {
+	            model.removeRow(n);
+	        }
+	    }
+	}
 	
-}
+	void DesAprobado() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    int rowCount = model.getRowCount();
+
+	    for (int n = rowCount - 1; n >= 0; n--) {
+	        double determinante = (double) model.getValueAt(n, 9);
+	        if (determinante>=11) {
+	            model.removeRow(n);
+	        }
+	    }
 	}
 	
 	 private void generarNumerosAleatorios() {
@@ -469,12 +536,18 @@ public class Vist extends JFrame {
 	        String prom = String.valueOf(decimalFormat.format(promedio));
 	        lblNFcontent.setText(prom);
 	    }
+	    
+	    private void promedioCalificacion() {
+
+	    	DecimalFormat dFormat = new DecimalFormat("#.##");
+	    	int fil = table.getRowCount();
+	    	double califinal = 0;
+	    	for(int i = 0; i<fil ; i++) {
+	    		double sum = (double) table.getValueAt(i, 9);
+	    		califinal+=sum;
+	    	}
+	    	double sumresult = califinal/(lista.size());
+	    	String rfinal = dFormat.format(sumresult);
+	    }
+	    
 }
-
-
-
-
-
-
-
-
