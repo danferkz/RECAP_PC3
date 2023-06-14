@@ -20,7 +20,7 @@ public class Laboratorio implements Estudiante {
 		this.nf = nf;
 	}
 
-	public int getDNI() {
+	public int txtDNI() {
 		return DNI;
 	}
 
